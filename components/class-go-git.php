@@ -33,11 +33,21 @@ class GO_Git
 	}//end admin_enqueue_scripts
 
 	/**
+	 * return array of git remotes
+	 */
+	public function git_remotes()
+	{
+		exec( 'cd ' . $this->theme_dir . '; git remote', $remotes );
+
+		return $remotes;
+	}//end git_remotes
+
+	/**
 	 * return the theme's git repository
 	 */
 	public function git_repository()
 	{
-		exec( 'cd ' . $this->theme_dir . '; git remote -v', $remotes );
+		$remotes = $this->git_remotes();
 
 		preg_match( '#origin[\s\t]+git@github.com\:([^\.]+)#', $remotes[0], $matches );
 
@@ -62,10 +72,20 @@ class GO_Git
 	 */
 	public function git_working_branch_status()
 	{
-		exec( 'cd ' . $this->theme_dir . '; git status -uno', $status );
-		$status = $status[1];
+		$remotes = $this->git_remotes();
 
-		return preg_replace( '/ \(use -u to show untracked files\)/', '', $status );
+		$status = array();
+
+		foreach( $remotes as $remote )
+		{
+			exec( 'cd ' . $this->theme_dir . '; git log --topo-order --no-merges --left-only --format=\'%H\' $(git rev-parse head)...$(git rev-parse ' . $remote . '/master) | wc -l', $ahead );
+			exec( 'cd ' . $this->theme_dir . '; git log --topo-order --no-merges --right-only --format=\'%H\' $(git rev-parse head)...$(git rev-parse ' . $remote . '/master) | wc -l', $behind );
+
+			$status[ $remote ]['ahead'] = (int) $ahead[0];
+			$status[ $remote ]['behind'] = (int) $behind[0];
+		}//end foreach
+
+		return $status;
 	}//end git_working_branch_status
 
 	/**
@@ -156,7 +176,27 @@ class GO_Git
 			<div class="current-branch">
 				<h3>Branch: <span class="branch"><?php echo $this->git_working_branch(); ?></span> on <a href="https://github.com/<?php echo $repository; ?>"><?php echo $repository; ?></a></h3>
 				<div class="status">
-					<?php echo $this->git_working_branch_status(); ?>
+					<?php
+						$statuses = $this->git_working_branch_status();
+
+						foreach ( $statuses as $remote => $status )
+						{
+							if ( ! $status['behind'] && ! $status['ahead'] )
+							{
+								continue;
+							}//end if
+
+							if ( $status['behind'] )
+							{
+								echo $status['behind'] . ' commits behind ' . $remote . '. ';
+							}//end if
+
+							if ( $status['ahead'] )
+							{
+								echo $status['ahead'] . ' commits ahead of ' . $remote . '. ';
+							}//end if
+						}//end foreach
+					?>
 				</div>
 			</div>
 			<?php echo $formatted; ?>
