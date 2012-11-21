@@ -78,8 +78,8 @@ class GO_Git
 
 		foreach( $remotes as $remote )
 		{
-			exec( __DIR__ . "/git-log {$this->theme_dir} {$remote} '<'", $ahead );
-			exec( __DIR__ . "/git-log {$this->theme_dir} {$remote} '>'", $behind );
+			exec( __DIR__ . "/git-log {$this->theme_dir} {$remote} '>'", $ahead );
+			exec( __DIR__ . "/git-log {$this->theme_dir} {$remote} '<'", $behind );
 
 			$status[ $remote ]['ahead'] = (int) $ahead[0];
 			$status[ $remote ]['behind'] = (int) $behind[0];
