@@ -47,7 +47,7 @@ class GO_Git
 	 */
 	public function git_repository()
 	{
-		$remotes = $this->git_remotes();
+		exec( 'cd ' . $this->theme_dir . '; git remote -v', $remotes );
 
 		preg_match( '#origin[\s\t]+git@github.com\:([^\.]+)#', $remotes[0], $matches );
 
