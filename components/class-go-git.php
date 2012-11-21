@@ -78,8 +78,8 @@ class GO_Git
 
 		foreach( $remotes as $remote )
 		{
-			exec( 'cd ' . $this->theme_dir . '; git log --topo-order --pretty=oneline --left-right --no-merges $(git rev-parse head)...$(git rev-parse ' . $remote . '/master) | grep "<" | wc -l', $ahead );
-			exec( 'cd ' . $this->theme_dir . '; git log --topo-order --pretty=oneline --left-right --no-merges $(git rev-parse head)...$(git rev-parse ' . $remote . '/master) | grep ">" | wc -l', $behind );
+			exec( 'cd ' . $this->theme_dir . '; git log --topo-order --pretty=oneline --left-right --no-merges $(git rev-parse HEAD)...$(git rev-parse ' . $remote . '/master) | grep "<" | wc -l', $ahead );
+			exec( 'cd ' . $this->theme_dir . '; git log --topo-order --pretty=oneline --left-right --no-merges $(git rev-parse HEAD)...$(git rev-parse ' . $remote . '/master) | grep ">" | wc -l', $behind );
 
 			$status[ $remote ]['ahead'] = (int) $ahead[0];
 			$status[ $remote ]['behind'] = (int) $behind[0];
