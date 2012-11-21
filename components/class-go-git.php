@@ -154,7 +154,7 @@ class GO_Git
 			<?php screen_icon('options-general'); ?>
 			<h2>Theme Git Info</h2>
 			<div class="current-branch">
-				Branch: <span class="branch"><?php echo $this->git_working_branch(); ?></span> on <a href="https://github.com/<?php echo $repository; ?>"><?php echo $repository; ?></a>
+				<h3>Branch: <span class="branch"><?php echo $this->git_working_branch(); ?></span> on <a href="https://github.com/<?php echo $repository; ?>"><?php echo $repository; ?></a></h3>
 				<div class="status">
 					<?php echo $this->git_working_branch_status(); ?>
 				</div>
