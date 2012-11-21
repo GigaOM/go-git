@@ -78,8 +78,8 @@ class GO_Git
 
 		foreach( $remotes as $remote )
 		{
-			exec( 'cd ' . $this->theme_dir . '; git log --topo-order --pretty=oneline --left-right --no-merges $(git rev-parse HEAD)...$(git rev-parse ' . $remote . '/master) | grep "<" | wc -l', $ahead );
-			exec( 'cd ' . $this->theme_dir . '; git log --topo-order --pretty=oneline --left-right --no-merges $(git rev-parse HEAD)...$(git rev-parse ' . $remote . '/master) | grep ">" | wc -l', $behind );
+			exec( __DIR__ . "/git-log {$this->theme_dir} {$remote} '<'", $ahead );
+			exec( __DIR__ . "/git-log {$this->theme_dir} {$remote} '>'", $behind );
 
 			$status[ $remote ]['ahead'] = (int) $ahead[0];
 			$status[ $remote ]['behind'] = (int) $behind[0];
@@ -179,6 +179,7 @@ class GO_Git
 					<?php
 						$statuses = $this->git_working_branch_status();
 
+						$final_status = '';
 						foreach ( $statuses as $remote => $status )
 						{
 							if ( ! $status['behind'] && ! $status['ahead'] )
@@ -188,14 +189,21 @@ class GO_Git
 
 							if ( $status['behind'] )
 							{
-								echo $status['behind'] . ' commits behind ' . $remote . '. ';
+								$final_status .= $status['behind'] . ' commit' . ($status['behind'] > 1 ? 's' : '') . ' behind ' . $remote . '. ';
 							}//end if
 
 							if ( $status['ahead'] )
 							{
-								echo $status['ahead'] . ' commits ahead of ' . $remote . '. ';
+								$final_status .= $status['ahead'] . ' commit' . ($status['ahead'] > 1 ? 's' : '') . ' ahead of ' . $remote . '. ';
 							}//end if
 						}//end foreach
+
+						if ( ! $final_status )
+						{
+							$final_status = 'This branch is in sync with all of its remotes.';
+						}//end if
+
+						echo $final_status;
 					?>
 				</div>
 			</div>
