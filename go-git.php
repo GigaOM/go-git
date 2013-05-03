@@ -1,6 +1,6 @@
 <?php
 /*
-Plugin Name: GO Git
+Plugin Name: GigaOM Git
 Version: 0.1
 Plugin URI: http://gigaom.com
 Description: Handy-dandy plugin to expose git information to a WordPress install
