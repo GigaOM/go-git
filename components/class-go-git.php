@@ -34,6 +34,8 @@ class GO_Git
 
 	/**
 	 * return array of git remotes
+	 *
+	 * @return $remotes array
 	 */
 	public function git_remotes()
 	{
@@ -44,6 +46,8 @@ class GO_Git
 
 	/**
 	 * return the theme's git repository
+	 *
+	 * @return $remote theme
 	 */
 	public function git_repository()
 	{
@@ -58,6 +62,8 @@ class GO_Git
 
 	/**
 	 * return the theme's working branch
+	 *
+	 * @return working branch of theme
 	 */
 	public function git_working_branch()
 	{
@@ -69,6 +75,8 @@ class GO_Git
 
 	/**
 	 * return the theme's working branch status
+	 *
+	 * @return $status of working branch
 	 */
 	public function git_working_branch_status()
 	{
@@ -90,6 +98,12 @@ class GO_Git
 
 	/**
 	 * convert #XXX to an issue link
+	 *
+	 * @param $text to convert
+	 *
+	 * @param $repository to access
+	 *
+	 * @return $text issue link
 	 */
 	public function link_issue_hash( $text, $repository )
 	{
@@ -100,6 +114,10 @@ class GO_Git
 
 	/**
 	 * return commit HTML
+	 *
+	 * @param $args arguements to commit
+	 *
+	 * @return ob_get_clean() cleaned commit HTML
 	 */
 	public function output_commit( $args )
 	{
@@ -112,7 +130,7 @@ class GO_Git
 				<h1>Commit by <span class="author"><?php echo $author; ?></span> at <time><?php echo human_time_diff( strtotime( $date ), time() ); ?> ago</time> (<a href="https://github.com/<?php echo $repository; ?>/commit/<?php echo $commit; ?>" class="diff">view diff</a>)</h1>
 				</header>
 				<div class="body">
-					<?php 
+					<?php
 						$body = htmlentities( $body );
 						echo nl2br( $this->link_issue_hash( $body, $repository ) );
 					?>
