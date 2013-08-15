@@ -100,9 +100,7 @@ class GO_Git
 	 * convert #XXX to an issue link
 	 *
 	 * @param $text to convert
-	 *
 	 * @param $repository to access
-	 *
 	 * @return $text issue link
 	 */
 	public function link_issue_hash( $text, $repository )
@@ -116,7 +114,6 @@ class GO_Git
 	 * return commit HTML
 	 *
 	 * @param $args arguements to commit
-	 *
 	 * @return ob_get_clean() cleaned commit HTML
 	 */
 	public function output_commit( $args )
