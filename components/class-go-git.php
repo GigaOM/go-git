@@ -118,23 +118,27 @@ class GO_Git
 	 */
 	public function output_commit( $args )
 	{
-		extract( $args );
+		$url = 'https://github.com/' . $args['repository'] . '/commit/' . $args['commit'];
 
 		ob_start();
 		?>
 			<div class="commit">
 				<header>
-				<h1>Commit by <span class="author"><?php echo $author; ?></span> at <time><?php echo human_time_diff( strtotime( $date ), time() ); ?> ago</time> (<a href="https://github.com/<?php echo $repository; ?>/commit/<?php echo $commit; ?>" class="diff">view diff</a>)</h1>
+				<h1>Commit by <span class="author"><?php echo esc_html( $args['author'] ); ?></span> at
+					<time>
+						<?php echo human_time_diff( strtotime( $args['date'] ), time() ); ?> ago
+					</time>
+					(<a href="<?php echo esc_url( $url ); ?>" class="diff">view diff</a>)
+				</h1>
 				</header>
 				<div class="body">
 					<?php
-						$body = htmlentities( $body );
-						echo nl2br( $this->link_issue_hash( $body, $repository ) );
+						$body = htmlentities( $args['body'] );
+						echo nl2br( $this->link_issue_hash( $body, $args['repository'] ) );
 					?>
 				</div>
 		</div>
 		<?php
-
 		return ob_get_clean();
 	}//end output_commit
 
