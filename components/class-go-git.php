@@ -118,6 +118,8 @@ class GO_Git
 	 */
 	public function output_commit( $args )
 	{
+		$url = 'https://github.com/' . $args['repository'] . '/commit/' . $args['commit'];
+
 		ob_start();
 		?>
 			<div class="commit">
@@ -126,9 +128,6 @@ class GO_Git
 					<time>
 						<?php echo human_time_diff( strtotime( $args['date'] ), time() ); ?> ago
 					</time>
-					<?php
-						$url = 'https://github.com/' . $args['repository'] . '/commit/' . $args['commit'];
-					?>
 					(<a href="<?php echo esc_url( $url ); ?>" class="diff">view diff</a>)
 				</h1>
 				</header>
@@ -140,7 +139,6 @@ class GO_Git
 				</div>
 		</div>
 		<?php
-
 		return ob_get_clean();
 	}//end output_commit
 
