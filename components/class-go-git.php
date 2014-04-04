@@ -122,7 +122,15 @@ class GO_Git
 		?>
 			<div class="commit">
 				<header>
-				<h1>Commit by <span class="author"><?php echo $args['author']; ?></span> at <time><?php echo human_time_diff( strtotime( $args['date'] ), time() ); ?> ago</time> (<a href="https://github.com/<?php echo $args['repository']; ?>/commit/<?php echo $args['commit']; ?>" class="diff">view diff</a>)</h1>
+				<h1>Commit by <span class="author"><?php echo esc_html( $args['author'] ); ?></span> at
+					<time>
+						<?php echo human_time_diff( strtotime( $args['date'] ), time() ); ?> ago
+					</time>
+					<?php
+						$url = 'https://github.com/' . $args['repository'] . '/commit/' . $args['commit'];
+					?>
+					(<a href="<?php echo esc_url( $url ); ?>" class="diff">view diff</a>)
+				</h1>
 				</header>
 				<div class="body">
 					<?php
